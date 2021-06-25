@@ -1,3 +1,11 @@
+import { BrowserRouter, Route } from "react-router-dom";
+
+import { Home } from "./pages/Home";
+
 export function App() {
-  return <h1>Hello World!</h1>;
+  return (
+    <BrowserRouter>
+      <Route path="/" exact component={Home}></Route>
+    </BrowserRouter>
+  );
 }

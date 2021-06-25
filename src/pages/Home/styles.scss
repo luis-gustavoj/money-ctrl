@@ -1,0 +1,107 @@
+@import "../../styles/global.scss";
+
+#home-page {
+  display: flex;
+  align-items: stretch;
+  height: 100vh;
+
+  aside {
+    flex: 7;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: $primary-color;
+
+    padding: 120px 80px;
+
+    > img {
+      max-width: 320px;
+    }
+
+    strong {
+      font: 700 36px "Poppins", sans-serif;
+      line-height: 42px;
+      margin-top: 32px;
+    }
+  }
+
+  main {
+    flex: 8;
+
+    padding: 0 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .main-container {
+    display: flex;
+    justify-content: stretch;
+
+    flex-direction: column;
+
+    max-width: 320px;
+
+    > img {
+      align-self: center;
+      margin-bottom: 32px;
+    }
+
+    .input-footer {
+      margin: 12px 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      height: 48px;
+      border-radius: 8px;
+      border: none;
+      margin: 12px 0 0 0;
+      padding: 0 16px;
+      border: 1px solid #a8a8b3;
+    }
+
+    button {
+      width: 100%;
+    }
+
+    span {
+      font-size: 14px;
+    }
+
+    small {
+      font-size: 12px;
+    }
+
+    #login-button {
+      height: 48px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+
+      cursor: pointer;
+      border: 0;
+
+      background: $primary-color;
+
+      transition: filter 0.2s;
+
+      &:hover {
+        filter: brightness(0.9);
+      }
+    }
+  }
+}
