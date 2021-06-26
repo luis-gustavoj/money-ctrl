@@ -1,10 +1,27 @@
+import { Link } from "react-router-dom";
+
 import { Button } from "../../components/Button/";
 
 import savingsImg from "../../assets/images/savings.svg";
 
 import "./styles.scss";
+import { FormEvent } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useState } from "react";
 
 export function Home() {
+  const { signIn } = useContext(AuthContext);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleSignIn(event: FormEvent) {
+    event.preventDefault();
+
+    signIn(email, password);
+  }
+
   return (
     <div id="home-page">
       <aside>
@@ -14,9 +31,19 @@ export function Home() {
       <main>
         <div className="main-container">
           <img src="" alt="Money.ctrl" />
-          <form>
-            <input type="text" placeholder="E-mail" />
-            <input type="password" placeholder="Password" />
+          <form onSubmit={handleSignIn}>
+            <input
+              type="text"
+              placeholder="E-mail"
+              onChange={(event) => setEmail(event.target.value)}
+              value={email}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={(event) => setPassword(event.target.value)}
+              value={password}
+            />
             <div className="input-footer">
               <div id="checkbox">
                 <input type="checkbox" />
@@ -28,6 +55,12 @@ export function Home() {
             </div>
             <Button id="login-button">Log in</Button>
           </form>
+          <div className="register">
+            New user?{" "}
+            <Link to="" className="link">
+              Sign up
+            </Link>
+          </div>
         </div>
       </main>
     </div>

@@ -103,5 +103,16 @@
         filter: brightness(0.9);
       }
     }
+
+    .register {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+      font-weight: 500;
+    }
   }
 }
