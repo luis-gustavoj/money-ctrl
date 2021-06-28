@@ -5,6 +5,7 @@ import { TransactionCard } from "../../components/TransactionCard";
 import balanceImg from "../../assets/images/money-bag.svg";
 import incomeImg from "../../assets/images/arrow-up.svg";
 import expenseImg from "../../assets/images/arrow-down.svg";
+import logoImg from "../../assets/images/logo.png";
 
 import "./styles.scss";
 import { Modal } from "../../components/Modal";
@@ -73,7 +74,9 @@ export function Dashboard() {
           </main>
         </>
       ) : (
-        <div>Carregando</div>
+        <div className="loading-page">
+          <img src={logoImg} alt="Money.ctrl" />
+        </div>
       )}
     </div>
   );
