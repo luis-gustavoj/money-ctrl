@@ -13,7 +13,7 @@
 
 - [ ✔ ] Firebase Authentication
 - [ ✔ ] Firebase Realtime DB Rules
-- [ ❌ ] Add a expense/income
+- [ ✔ ] Add a expense/income
 - [ ❌ ] Remove a expense/income
 - [ ❌ ] Update a expense/income
 - [ ❌ ] Calculate total budget
