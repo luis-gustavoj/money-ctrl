@@ -22,53 +22,59 @@ export function Dashboard() {
   return (
     <div id="dashboard-page">
       {isModalVisible && <Modal />}
-      <aside>
-        <Sidebar></Sidebar>
-      </aside>
-      <main>
-        <header className="dashboard-header">
-          <h1>Dashboard</h1>
-          <p>{userInfo?.name}</p>
-        </header>
-        <div className="content-container">
-          <div className="content-header">
-            <Card
-              cardTitle="Current balance"
-              cardImg={balanceImg}
-              cardValue={userInfo?.totalBudget}
-            ></Card>
-            <Card
-              cardTitle="Incomes"
-              cardImg={incomeImg}
-              cardValue={userInfo?.totalIncomes}
-            ></Card>
-            <Card
-              cardTitle="Expenses"
-              cardImg={expenseImg}
-              cardValue={userInfo?.totalExpenses}
-            ></Card>
-          </div>
-          <div className="content-body">
-            <div className="content-body-title">
-              <h5>Transactions</h5>
-            </div>
-            <div className="content-main">
-              <div className="items-container">
-                {transactions.map((transaction) => {
-                  return (
-                    <TransactionCard
-                      key={transaction.id}
-                      description={transaction.description}
-                      value={transaction.value}
-                      date={transaction.date}
-                    ></TransactionCard>
-                  );
-                })}
+      {userInfo ? (
+        <>
+          <aside>
+            <Sidebar></Sidebar>
+          </aside>
+          <main>
+            <header className="dashboard-header">
+              <h1>Dashboard</h1>
+              <p>{userInfo?.name}</p>
+            </header>
+            <div className="content-container">
+              <div className="content-header">
+                <Card
+                  cardTitle="Current balance"
+                  cardImg={balanceImg}
+                  cardValue={userInfo?.totalBudget}
+                ></Card>
+                <Card
+                  cardTitle="Incomes"
+                  cardImg={incomeImg}
+                  cardValue={userInfo?.totalIncomes}
+                ></Card>
+                <Card
+                  cardTitle="Expenses"
+                  cardImg={expenseImg}
+                  cardValue={userInfo?.totalExpenses}
+                ></Card>
+              </div>
+              <div className="content-body">
+                <div className="content-body-title">
+                  <h5>Transactions</h5>
+                </div>
+                <div className="content-main">
+                  <div className="items-container">
+                    {transactions.map((transaction) => {
+                      return (
+                        <TransactionCard
+                          key={transaction.id}
+                          description={transaction.description}
+                          value={transaction.value}
+                          date={transaction.date}
+                        ></TransactionCard>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
+          </main>
+        </>
+      ) : (
+        <div>Carregando</div>
+      )}
     </div>
   );
 }

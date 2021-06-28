@@ -1,5 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { createContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { auth, database, firebase } from "../services/firebase";
 
 type User = {
@@ -25,6 +26,7 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
   const [user, setUser] = useState<User>();
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -70,18 +72,24 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }
 
   async function signIn(email: string, password: string) {
-    const result = await auth.signInWithEmailAndPassword(email, password);
+    const result = await auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
 
-    if (!result.user) {
-      alert("usuario não conectado");
-      return;
+        console.log(errorCode, errorMessage);
+      });
+
+    if (result?.user) {
+      const { uid } = result.user;
+
+      setUser({
+        id: uid,
+      });
+
+      history.push("/dashboard");
     }
-
-    const { uid } = result.user;
-
-    setUser({
-      id: uid,
-    });
   }
 
   async function signOut() {
