@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../../components/Button/";
 
 import savingsImg from "../../assets/images/savings.svg";
+import logoImg from "../../assets/images/logo.png";
 
 import "./styles.scss";
 import { FormEvent } from "react";
@@ -30,7 +31,7 @@ export function Home() {
       </aside>
       <main>
         <div className="main-container">
-          <img src="" alt="Money.ctrl" />
+          <img src={logoImg} alt="Money.ctrl" />
           <form onSubmit={handleSignIn}>
             <input
               type="text"
@@ -57,7 +58,7 @@ export function Home() {
           </form>
           <div className="register">
             New user?{" "}
-            <Link to="" className="link">
+            <Link to="/register" className="link">
               Sign up
             </Link>
           </div>

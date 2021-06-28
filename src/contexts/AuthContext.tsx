@@ -45,6 +45,12 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       console.log("Cadastro não realizado");
       return;
     }
+
+    const { uid } = result.user;
+
+    setUser({
+      id: uid,
+    });
   }
 
   async function signIn(email: string, password: string) {
@@ -54,13 +60,14 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       return;
     }
 
-    console.log(result.user);
-
     const { uid } = result.user;
 
     setUser({
       id: uid,
     });
+
+    console.log("usuario logado com sucesso");
+    console.log(user);
   }
 
   async function signOut() {

@@ -1,0 +1,59 @@
+@import "../../styles/global.scss";
+
+.card {
+  // width: 288px;
+  min-width: 360px;
+  height: 96px;
+  display: flex;
+
+  padding: 18px;
+
+  justify-content: space-between;
+
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+
+  .card-text-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .card-title {
+      font-size: 16;
+      color: #adadad;
+    }
+
+    .card-value {
+      font-size: 28px;
+      font-weight: 500;
+    }
+  }
+
+  .card-image {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background-color: #0080ff;
+
+    &.incomes {
+      background-color: $green-color;
+    }
+
+    &.expenses {
+      background-color: $red-color;
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
+  }
+}

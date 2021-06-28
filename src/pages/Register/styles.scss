@@ -17,9 +17,20 @@
 
     max-width: 320px;
 
-    > img {
-      align-self: center;
-      margin-bottom: 32px;
+    header {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+
+      img {
+        width: 180px;
+        align-self: center;
+      }
+
+      strong {
+        font: 700 24px "Poppins", sans-serif;
+        line-height: 42px;
+      }
     }
 
     input[type="text"],
@@ -53,6 +64,31 @@
 
       &:hover {
         filter: brightness(0.9);
+      }
+    }
+
+    .divider {
+      font-size: 14px;
+      color: #a8a8b3;
+
+      margin: 32px 0 12px;
+      display: flex;
+      align-items: center;
+
+      &::before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #a8a8b3;
+        margin-right: 16px;
+      }
+
+      &::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #a8a8b3;
+        margin-left: 16px;
       }
     }
   }
