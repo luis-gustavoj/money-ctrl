@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { Button } from "../../components/Button/";
 
@@ -10,17 +10,21 @@ import { FormEvent } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Home() {
   const { signIn } = useContext(AuthContext);
+  const history = useHistory();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSignIn(event: FormEvent) {
+  async function handleSignIn(event: FormEvent) {
     event.preventDefault();
 
-    signIn(email, password);
+    await signIn(email, password);
+
+    history.push("/dashboard");
   }
 
   return (

@@ -1,5 +1,3 @@
-import { database } from "../../services/firebase";
-
 import { FormEvent, useContext } from "react";
 import { useState } from "react";
 import { Button } from "../../components/Button";
@@ -8,12 +6,9 @@ import { AuthContext } from "../../contexts/AuthContext";
 import logoImg from "../../assets/images/logo.png";
 
 import "./styles.scss";
-import { useAuth } from "../../hooks/useAuth";
 
 export function Register() {
   const { RegisterAccount } = useContext(AuthContext);
-
-  const { user } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

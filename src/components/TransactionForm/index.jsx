@@ -7,7 +7,6 @@ import { ModalContext } from "../../contexts/ModalContext";
 import { Button } from "../Button";
 
 import "./styles.scss";
-import { type } from "os";
 
 export function TransactionForm() {
   const { user } = useAuth();
@@ -16,7 +15,6 @@ export function TransactionForm() {
   const [description, setDescription] = useState("");
   const [value, setValue] = useState(0);
   const [date, setDate] = useState("");
-  // const [type, setType] = useState("");
 
   async function handleSendTransaction(event: FormEvent) {
     event.preventDefault();
@@ -35,9 +33,35 @@ export function TransactionForm() {
       date: date,
     };
 
-    await database
-      .ref(`users/${user.id}/transactions/${transactionType}/`)
-      .push(transaction);
+    await database.ref(`users/${user.id}/transactions/`).push(transaction);
+
+    handleChangeValues(transactionType);
+  }
+
+  async function handleChangeValues(transactionType: string) {
+    const userRef = database.ref(`users/${user.id}`);
+    const currentBudgetRef = database.ref(`users/${user.id}/totalBudget`);
+    const currentExpensesRef = database.ref(`users/${user.id}/totalExpenses`);
+
+    currentBudgetRef.once("value", (snapshot) => {
+      let currentValue = snapshot.val();
+      console.log(currentValue);
+      if (transactionType === "incomes") {
+        let totalValue = +currentValue + +value;
+        console.log(totalValue);
+        userRef.update({ totalBudget: totalValue, totalIncomes: totalValue });
+      } else {
+        currentExpensesRef.once("value", (snapshot) => {
+          let currentExpensesValue = snapshot.val();
+          let totalBudgetValue = +currentValue + +value;
+          let totalExpensesValue = +currentExpensesValue + Math.abs(+value);
+          userRef.update({
+            totalBudget: totalBudgetValue,
+            totalExpenses: totalExpensesValue,
+          });
+        });
+      }
+    });
   }
 
   return (

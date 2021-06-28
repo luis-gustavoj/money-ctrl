@@ -1,45 +1,32 @@
+import { useEffect, useState } from "react";
+import { database } from "../services/firebase";
 import { useAuth } from "./useAuth";
 
 type UserType = {
   id: string;
   name: string;
-  budget: number;
-  expenses: {
-    incomes: {
-      description: string;
-      value: number;
-      date: string;
-    };
-    expenses: {
-      description: string;
-      category: string;
-      value: number;
-    };
-  };
+  totalBudget: number;
+  totalExpenses: number;
+  totalIncomes: number;
 };
 
-type FirebaseUser = Record<
-  string,
-  {
-    name: string;
-    budget: number;
-    expenses: {
-      incomes: Record<
-        string,
-        {
-          description: string;
-          category: string;
-          value: number;
-        }
-      >;
-      expenses: Record<
-        string,
-        {
-          description: string;
-          category: string;
-          value: number;
-        }
-      >;
-    };
-  }
->;
+export function useUser() {
+  const { user } = useAuth();
+
+  const [userInfo, setUserInfo] = useState<UserType>();
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const userRef = database.ref(`users/${user.id}`);
+
+    userRef.on("value", (userInfo) => {
+      const databaseUserInfo = userInfo.val();
+      setUserInfo(databaseUserInfo);
+    });
+  }, [user]);
+
+  return { userInfo };
+}

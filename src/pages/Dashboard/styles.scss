@@ -54,4 +54,41 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  .content-body {
+    width: 100%;
+
+    .content-body-title {
+      width: 100%;
+      padding: 18px;
+      text-align: center;
+    }
+
+    h5 {
+      font-size: 20px;
+    }
+
+    .content-main {
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+      background-color: #fff;
+      padding: 24px;
+      height: 424px;
+
+      overflow: scroll;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+  }
 }

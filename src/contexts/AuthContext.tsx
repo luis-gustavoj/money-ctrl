@@ -60,19 +60,24 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     userRef.child(uid).set({
       email: email,
       name: name,
+      totalIncomes: 0,
+      totalExpenses: 0,
+      totalBudget: 0,
     });
+
+    setUser(undefined);
+    firebase.auth().signOut();
   }
 
   async function signIn(email: string, password: string) {
     const result = await auth.signInWithEmailAndPassword(email, password);
 
     if (!result.user) {
+      alert("usuario não conectado");
       return;
     }
 
     const { uid } = result.user;
-
-    console.log(uid);
 
     setUser({
       id: uid,
