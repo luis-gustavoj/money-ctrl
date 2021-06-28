@@ -1,0 +1,58 @@
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+}
+
+.add-transaction-button,
+.cancel-transaction-button {
+  width: 196px;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.add-transaction-button {
+  color: #fff;
+  background: #4cbb17;
+  border: none;
+}
+
+.add-transaction-button:hover {
+  background: #55d61a;
+}
+
+.cancel-transaction-button {
+  border-width: 2px;
+  border-color: #b80f04;
+  color: #b80f04;
+  background: none;
+  border-style: solid;
+}
+
+.cancel-transaction-button:hover {
+  border-color: #d81204;
+  color: #d81204;
+}
+
+.input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.8rem;
+}
+
+.input-container > label {
+  font-size: 0.9rem;
+}
+
+.obs {
+  font-size: 0.9rem;
+}
+
+.input-container > input {
+  background: #dcdee0;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.5rem;
+}

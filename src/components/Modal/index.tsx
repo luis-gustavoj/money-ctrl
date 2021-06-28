@@ -1,9 +1,11 @@
 import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+
+import { ModalContext } from "../../contexts/ModalContext";
+
+import { TransactionForm } from "../TransactionForm";
 
 import "./styles.scss";
-import { useContext } from "react";
-import { ModalContext } from "../../contexts/ModalContext";
 
 export function Modal() {
   const { handleCloseModal } = useContext(ModalContext);
@@ -18,7 +20,9 @@ export function Modal() {
           <h2>Add transaction</h2>
           <hr className="divider" />
         </div>
-        <div className="modalBody"></div>
+        <div className="modalBody">
+          <TransactionForm></TransactionForm>
+        </div>
       </div>
     </div>
   );

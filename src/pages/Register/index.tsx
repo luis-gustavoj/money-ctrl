@@ -22,22 +22,7 @@ export function Register() {
   async function handleRegister(event: FormEvent) {
     event.preventDefault();
 
-    await RegisterAccount(email, password);
-
-    createUserRegistry();
-  }
-
-  async function createUserRegistry() {
-    const userRef = database.ref("users");
-
-    if (!user) {
-      return;
-    }
-
-    await userRef.child(user.id).set({
-      name: name,
-      email: email,
-    });
+    await RegisterAccount(email, password, name);
   }
 
   return (

@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { createContext, useState } from "react";
-import { auth, firebase } from "../services/firebase";
+import { auth, database, firebase } from "../services/firebase";
 
 type User = {
   id: string;
@@ -8,7 +8,11 @@ type User = {
 
 type AuthContextType = {
   user: User | undefined;
-  RegisterAccount: (email: string, password: string) => Promise<void>;
+  RegisterAccount: (
+    email: string,
+    password: string,
+    name: string
+  ) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -38,7 +42,12 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     };
   }, []);
 
-  async function RegisterAccount(email: string, password: string) {
+  async function RegisterAccount(
+    email: string,
+    password: string,
+    name: string
+  ) {
+    const userRef = database.ref("users");
     const result = await auth.createUserWithEmailAndPassword(email, password);
 
     if (!result.user) {
@@ -48,8 +57,9 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
     const { uid } = result.user;
 
-    setUser({
-      id: uid,
+    userRef.child(uid).set({
+      email: email,
+      name: name,
     });
   }
 
@@ -62,12 +72,11 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
     const { uid } = result.user;
 
+    console.log(uid);
+
     setUser({
       id: uid,
     });
-
-    console.log("usuario logado com sucesso");
-    console.log(user);
   }
 
   async function signOut() {

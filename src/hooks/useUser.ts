@@ -7,8 +7,8 @@ type UserType = {
   expenses: {
     incomes: {
       description: string;
-      category: string;
       value: number;
+      date: string;
     };
     expenses: {
       description: string;
