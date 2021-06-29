@@ -5,7 +5,7 @@ import { ProSidebar, SidebarHeader, Menu } from "react-pro-sidebar";
 import { Button } from "../../components/Button";
 
 import plusImg from "../../assets/images/plus.svg";
-import logoImg from "../../assets/images/logo-minimal.png";
+import logoImg from "../../assets/images/logo-minimal2.png";
 
 import "./styles.scss";
 

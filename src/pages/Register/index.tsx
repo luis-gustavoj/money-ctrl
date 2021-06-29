@@ -12,12 +12,16 @@ export function Register() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
 
   async function handleRegister(event: FormEvent) {
     event.preventDefault();
 
-    await RegisterAccount(email, password, name);
+    if (!name.trim()) {
+      return;
+    }
+    await RegisterAccount(email, password, confirmPassword, name);
   }
 
   return (
@@ -47,6 +51,12 @@ export function Register() {
             placeholder="Password"
             onChange={(event) => setPassword(event.target.value)}
             value={password}
+          />
+          <input
+            type="password"
+            placeholder="Confirm password"
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            value={confirmPassword}
           />
           <Button id="register-button">Register</Button>
         </form>

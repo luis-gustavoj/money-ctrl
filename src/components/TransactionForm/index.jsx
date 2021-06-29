@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { toast } from "react-hot-toast";
 
 import { database } from "../../services/firebase";
 
@@ -33,7 +34,14 @@ export function TransactionForm() {
       date: date,
     };
 
-    await database.ref(`users/${user.id}/transactions/`).push(transaction);
+    toast.promise(
+      database.ref(`users/${user.id}/transactions/`).push(transaction),
+      {
+        loading: "Saving...",
+        success: <b>Transaction saved!</b>,
+        error: <b>Could not save.</b>,
+      }
+    );
 
     handleChangeValues(transactionType);
   }
@@ -80,6 +88,7 @@ export function TransactionForm() {
         <label htmlFor="value">Value</label>
         <input
           placeholder="$0.00"
+          id="value"
           type="text"
           value={value}
           onChange={(event) => setValue(event.target.value)}

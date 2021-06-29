@@ -2,6 +2,9 @@ import "./styles.scss";
 
 import { database } from "../../services/firebase";
 import { useAuth } from "../../hooks/useAuth";
+import { toast } from "react-hot-toast";
+import { useContext } from "react";
+import { ModalContext } from "../../contexts/ModalContext";
 
 type TransactionProps = {
   description: string;
@@ -29,7 +32,11 @@ export function TransactionCard({
 
     const transactionRef = database.ref(`users/${user.id}/transactions`);
 
-    await transactionRef.child(id).remove();
+    toast.promise(transactionRef.child(id).remove(), {
+      loading: "Deleting...",
+      success: <b>Transaction deleted!</b>,
+      error: <b>Could not delete.</b>,
+    });
 
     handleChangeValues();
   }
