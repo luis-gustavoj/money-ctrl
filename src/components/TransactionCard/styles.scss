@@ -32,6 +32,27 @@
     justify-content: center;
     gap: 24px;
     align-items: center;
+    cursor: pointer;
+  }
+
+  .icon {
+    cursor: pointer;
+    transition: transform 100ms ease-in-out;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+
+  .transaction-value {
+    &.income {
+      color: $green-color;
+    }
+
+    &.expense {
+      color: $red-color;
+    }
   }
 
   .icon {

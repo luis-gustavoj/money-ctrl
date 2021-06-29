@@ -1,7 +1,11 @@
 @import "../../styles/global.scss";
 
 $sidebar-collapsed-width: 96px;
-$sidebar-bg-color: #fefefe;
+$sidebar-bg-color: #242331;
+
+.pro-sidebar {
+  box-shadow: 0 0px 4px rgba(0, 0, 0, 0.2);
+}
 
 @import "~react-pro-sidebar/dist/scss/styles.scss";
 
@@ -96,7 +100,8 @@ img {
 
     transition: filter 0.2s;
 
-    box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.4);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+      rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 
     &:hover {
       filter: brightness(0.8);

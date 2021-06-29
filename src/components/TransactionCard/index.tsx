@@ -1,21 +1,74 @@
 import "./styles.scss";
 
+import { database } from "../../services/firebase";
+import { useAuth } from "../../hooks/useAuth";
+
 type TransactionProps = {
   description: string;
   value: number;
   date: string;
+  id: string;
 };
 
 export function TransactionCard({
   description,
   value,
   date,
+  id,
 }: TransactionProps) {
+  const { user } = useAuth();
+
+  const formatter = new Intl.NumberFormat("pt-br", {
+    minimumFractionDigits: 2,
+  });
+
+  async function handleDeleteTransaction() {
+    if (!user) {
+      return;
+    }
+
+    const transactionRef = database.ref(`users/${user.id}/transactions`);
+
+    await transactionRef.child(id).remove();
+
+    handleChangeValues();
+  }
+
+  async function handleChangeValues() {
+    if (!user) {
+      return;
+    }
+
+    const userRef = database.ref(`users/${user.id}`);
+    const currentBudgetRef = database.ref(`users/${user.id}/totalBudget`);
+    const currentExpensesRef = database.ref(`users/${user.id}/totalExpenses`);
+
+    currentBudgetRef.once("value", (snapshot) => {
+      let currentValue = snapshot.val();
+      if (value > 0) {
+        let totalValue = +currentValue - +value;
+        userRef.update({ totalBudget: totalValue, totalIncomes: totalValue });
+      } else {
+        currentExpensesRef.once("value", (snapshot) => {
+          let currentExpensesValue = snapshot.val();
+          let totalBudgetValue = +currentValue - +value;
+          let totalExpensesValue = +currentExpensesValue - Math.abs(+value);
+          userRef.update({
+            totalBudget: totalBudgetValue,
+            totalExpenses: totalExpensesValue,
+          });
+        });
+      }
+    });
+  }
+
   return (
     <div className="transaction-card">
       <div className="transaction-description">{description}</div>
-      <div className="transaction-value">{value}</div>
-      <div className="transaction-date">{date}</div>
+      <div className={`transaction-value ${value > 0 ? "income" : "expense"}`}>
+        {formatter.format(value)}
+      </div>
+      <div className="transaction-date">{date.replaceAll("-", "/")}</div>
       <div className="transaction-buttons">
         <div className="icon edit">
           <svg
@@ -32,7 +85,7 @@ export function TransactionCard({
             />
           </svg>
         </div>
-        <div className="icon delete">
+        <div className="icon delete" onClick={handleDeleteTransaction}>
           <svg
             viewBox="0 0 24 24"
             fill="none"

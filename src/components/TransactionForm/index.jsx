@@ -13,7 +13,7 @@ export function TransactionForm() {
   const { handleCloseModal } = useContext(ModalContext);
 
   const [description, setDescription] = useState("");
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState();
   const [date, setDate] = useState("");
 
   async function handleSendTransaction(event: FormEvent) {
@@ -29,7 +29,7 @@ export function TransactionForm() {
 
     const transaction = {
       description: description,
-      value: value,
+      value: value.replace("$", "").replace(",", ""),
       date: date,
     };
 
@@ -79,16 +79,12 @@ export function TransactionForm() {
       <div className="input-container">
         <label htmlFor="value">Value</label>
         <input
+          placeholder="$0.00"
           type="text"
-          required="required"
-          id="value"
-          onChange={(event) => setValue(event.target.value)}
           value={value}
+          onChange={(event) => setValue(event.target.value)}
         />
-        <small className="help">
-          Use o sinal - (negativo) para despesas e, (vírgula) para casas
-          decimais
-        </small>
+        <small className="help">Use the sign - (negative) for expenses</small>
       </div>
       <div className="input-container">
         <label htmlFor="date">Date</label>

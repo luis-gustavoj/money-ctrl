@@ -96,6 +96,8 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     await firebase.auth().signOut();
 
     setUser(undefined);
+
+    history.push("/");
   }
 
   return (

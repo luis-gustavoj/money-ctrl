@@ -13,10 +13,12 @@ import { useContext } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useUser } from "../../hooks/useUser";
+import { Button } from "../../components/Button";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Dashboard() {
   const { isModalVisible } = useContext(ModalContext);
-
+  const { signOut } = useAuth();
   const { transactions } = useTransactions();
   const { userInfo } = useUser();
 
@@ -31,7 +33,10 @@ export function Dashboard() {
           <main>
             <header className="dashboard-header">
               <h1>Dashboard</h1>
-              <p>{userInfo?.name}</p>
+              <div className="user-info">
+                <p>{userInfo?.name}</p>
+                <Button onClick={signOut}>Log out</Button>
+              </div>
             </header>
             <div className="content-container">
               <div className="content-header">
@@ -60,6 +65,7 @@ export function Dashboard() {
                     {transactions.map((transaction) => {
                       return (
                         <TransactionCard
+                          id={transaction.id}
                           key={transaction.id}
                           description={transaction.description}
                           value={transaction.value}
