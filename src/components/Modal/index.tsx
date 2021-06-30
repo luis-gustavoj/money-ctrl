@@ -7,7 +7,21 @@ import { TransactionForm } from "../TransactionForm";
 
 import "./styles.scss";
 
-export function Modal() {
+export function Modal({
+  editingValue,
+  editingDescription,
+  editingDate,
+  id,
+  isEditing,
+  setEditingTransaction,
+}: {
+  editingValue?: number;
+  editingDescription?: string;
+  editingDate?: string;
+  id?: string;
+  isEditing?: boolean;
+  setEditingTransaction?: () => void;
+}) {
   const { handleCloseModal } = useContext(ModalContext);
 
   const wrapperRef = useRef(null);
@@ -21,7 +35,18 @@ export function Modal() {
           <hr className="divider" />
         </div>
         <div className="modalBody">
-          <TransactionForm></TransactionForm>
+          {isEditing ? (
+            <TransactionForm
+              editingValue={editingValue}
+              id={id}
+              editingDescription={editingDescription}
+              editingDate={editingDate}
+              isEditing={isEditing}
+              setEditingTransaction={setEditingTransaction}
+            ></TransactionForm>
+          ) : (
+            <TransactionForm></TransactionForm>
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 .modal {
-  position: fixed;
-  z-index: 102;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
   left: 0;
   top: 0;
   right: 0;
@@ -13,6 +14,7 @@
 }
 
 .modalContent {
+  z-index: 1011;
   background: #fff;
   max-width: 500px;
   width: 90%;

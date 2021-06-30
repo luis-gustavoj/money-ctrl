@@ -9,12 +9,26 @@ import { Button } from "../Button";
 
 import "./styles.scss";
 
-export function TransactionForm() {
+export function TransactionForm({
+  editingValue,
+  editingDescription,
+  editingDate,
+  id,
+  isEditing,
+  setEditingTransaction,
+}: {
+  editingValue?: number,
+  editingDescription?: string,
+  editingDate?: string,
+  id?: string,
+  isEditing?: boolean,
+  setEditingTransaction?: () => void,
+}) {
   const { user } = useAuth();
   const { handleCloseModal } = useContext(ModalContext);
 
   const [description, setDescription] = useState("");
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(Number);
   const [date, setDate] = useState("");
 
   async function handleSendTransaction(event: FormEvent) {
@@ -24,10 +38,6 @@ export function TransactionForm() {
       console.log("You must be logged in");
     }
 
-    let transactionType = "";
-
-    value > 0 ? (transactionType = "incomes") : (transactionType = "expenses");
-
     const transaction = {
       description: description,
       value: value.replace("$", "").replace(",", ""),
@@ -35,7 +45,13 @@ export function TransactionForm() {
     };
 
     toast.promise(
-      database.ref(`users/${user.id}/transactions/`).push(transaction),
+      isEditing
+        ? database.ref(`users/${user.id}/transactions/${id}`).update({
+            description: transaction.description,
+            value: transaction.value,
+            date: transaction.date,
+          })
+        : database.ref(`users/${user.id}/transactions/`).push(transaction),
       {
         loading: "Saving...",
         success: <b>Transaction saved!</b>,
@@ -43,26 +59,41 @@ export function TransactionForm() {
       }
     );
 
-    handleChangeValues(transactionType);
+    handleChangeValues();
   }
 
-  async function handleChangeValues(transactionType: string) {
+  async function handleChangeValues() {
     const userRef = database.ref(`users/${user.id}`);
     const currentBudgetRef = database.ref(`users/${user.id}/totalBudget`);
     const currentExpensesRef = database.ref(`users/${user.id}/totalExpenses`);
 
     currentBudgetRef.once("value", (snapshot) => {
       let currentValue = snapshot.val();
-      console.log(currentValue);
-      if (transactionType === "incomes") {
-        let totalValue = +currentValue + +value;
-        console.log(totalValue);
+      if (value > 0) {
+        let totalValue = 0;
+
+        if (isEditing) {
+          totalValue = currentValue - editingValue + value;
+        } else {
+          totalValue = +currentValue + +value;
+        }
         userRef.update({ totalBudget: totalValue, totalIncomes: totalValue });
       } else {
         currentExpensesRef.once("value", (snapshot) => {
           let currentExpensesValue = snapshot.val();
-          let totalBudgetValue = +currentValue + +value;
-          let totalExpensesValue = +currentExpensesValue + Math.abs(+value);
+
+          let totalBudgetValue = 0;
+          let totalExpensesValue = 0;
+
+          if (isEditing) {
+            totalBudgetValue = +currentValue + Math.abs(+editingValue) + +value;
+            totalExpensesValue =
+              +currentExpensesValue + +editingValue + Math.abs(+value);
+          } else {
+            totalBudgetValue = +currentValue + +value;
+            totalExpensesValue = +currentExpensesValue + Math.abs(+value);
+          }
+
           userRef.update({
             totalBudget: totalBudgetValue,
             totalExpenses: totalExpensesValue,
@@ -109,7 +140,9 @@ export function TransactionForm() {
         <div className="button-container">
           <Button
             className="cancel-transaction-button"
-            onClick={handleCloseModal}
+            onClick={
+              isEditing ? () => setEditingTransaction(false) : handleCloseModal
+            }
           >
             Cancel
           </Button>
