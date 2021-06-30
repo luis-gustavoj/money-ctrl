@@ -4,10 +4,10 @@
 
 ## 💻 Technologies used in the project
 
-- Typescript 
-- Javascript ES6 
-- CSS (Sass) 
-- Firebase 
+- Typescript
+- Javascript ES6
+- CSS (Sass)
+- Firebase
 
 ## 🔧 Funcionalities
 
@@ -15,11 +15,19 @@
 - [ ✔ ] Firebase Realtime DB Rules
 - [ ✔ ] Add a expense/income
 - [ ✔ ] Remove a expense/income
-- [ ❌ ] Update a expense/income
+- [ ✔ ] Update a expense/income
 - [ ✔ ] Calculate total budget
 - [ ✔ ] Calculate total income
 - [ ✔ ] Calculate total expenses
 - [ ❌ ] Classify expense/income by categories
-- [ ❌ ] Plot charts based on budget analysis 
+- [ ❌ ] Plot charts based on budget analysis
+
+## ⚖ License
+
+This project is under MIT license. For more details [click here](/LICENSE)
 
 ## ⚠ Currently in development
+
+---
+
+Made with 💜 by [Luis Silva](https://github.com/luis-gustavoj)
