@@ -50,6 +50,10 @@ export function useTransactions() {
 
       setTransactions(parsedTransactions);
     });
+
+    return () => {
+      userRef.off("value");
+    };
   }, [user]);
 
   return { transactions };

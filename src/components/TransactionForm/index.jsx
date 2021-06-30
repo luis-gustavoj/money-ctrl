@@ -28,7 +28,7 @@ export function TransactionForm({
   const { handleCloseModal } = useContext(ModalContext);
 
   const [description, setDescription] = useState("");
-  const [value, setValue] = useState(Number);
+  const [value, setValue] = useState();
   const [date, setDate] = useState("");
 
   async function handleSendTransaction(event: FormEvent) {
@@ -62,29 +62,42 @@ export function TransactionForm({
     handleChangeValues();
   }
 
-  async function handleChangeValues() {
+  function handleChangeValues() {
     const userRef = database.ref(`users/${user.id}`);
     const currentBudgetRef = database.ref(`users/${user.id}/totalBudget`);
     const currentExpensesRef = database.ref(`users/${user.id}/totalExpenses`);
+    const currentIncomesRef = database.ref(`users/${user.id}/totalIncomes`);
 
     currentBudgetRef.once("value", (snapshot) => {
       let currentValue = snapshot.val();
       if (value > 0) {
         let totalValue = 0;
+        let totalIncomesValue = 0;
 
-        if (isEditing) {
-          totalValue = currentValue - editingValue + value;
-        } else {
-          totalValue = +currentValue + +value;
-        }
-        userRef.update({ totalBudget: totalValue, totalIncomes: totalValue });
+        currentIncomesRef.once("value", (snapshot) => {
+          let currentIncomesValue = snapshot.val();
+          if (isEditing) {
+            totalValue = +currentValue - +editingValue + +value;
+            totalIncomesValue = +currentIncomesValue - +editingValue + +value;
+            userRef.update({
+              totalBudget: totalValue,
+              totalIncomes: totalIncomesValue,
+            });
+          } else {
+            totalValue = +currentValue + +value;
+            totalIncomesValue = +currentIncomesValue + +value;
+            userRef.update({
+              totalBudget: totalValue,
+              totalIncomes: totalIncomesValue,
+            });
+          }
+        });
       } else {
         currentExpensesRef.once("value", (snapshot) => {
           let currentExpensesValue = snapshot.val();
 
           let totalBudgetValue = 0;
           let totalExpensesValue = 0;
-
           if (isEditing) {
             totalBudgetValue = +currentValue + Math.abs(+editingValue) + +value;
             totalExpensesValue =
@@ -93,7 +106,6 @@ export function TransactionForm({
             totalBudgetValue = +currentValue + +value;
             totalExpensesValue = +currentExpensesValue + Math.abs(+value);
           }
-
           userRef.update({
             totalBudget: totalBudgetValue,
             totalExpenses: totalExpensesValue,
@@ -102,7 +114,6 @@ export function TransactionForm({
       }
     });
   }
-
   return (
     <form onSubmit={handleSendTransaction}>
       <div className="input-container">

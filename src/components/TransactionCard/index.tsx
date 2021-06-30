@@ -51,7 +51,7 @@ export function TransactionCard({
     setIsEditing(false);
   }
 
-  async function handleChangeValues() {
+  function handleChangeValues() {
     if (!user) {
       return;
     }
@@ -59,17 +59,32 @@ export function TransactionCard({
     const userRef = database.ref(`users/${user.id}`);
     const currentBudgetRef = database.ref(`users/${user.id}/totalBudget`);
     const currentExpensesRef = database.ref(`users/${user.id}/totalExpenses`);
+    const currentIncomesRef = database.ref(`users/${user.id}/totalIncomes`);
 
     currentBudgetRef.once("value", (snapshot) => {
       let currentValue = snapshot.val();
       if (value > 0) {
-        let totalValue = +currentValue - +value;
-        userRef.update({ totalBudget: totalValue, totalIncomes: totalValue });
+        let totalValue = 0;
+        let totalIncomesValue = 0;
+
+        currentIncomesRef.once("value", (snapshot) => {
+          let currentIncomesValue = snapshot.val();
+
+          totalValue = +currentValue - +value;
+          totalIncomesValue = +currentIncomesValue - +value;
+          userRef.update({
+            totalBudget: totalValue,
+            totalIncomes: totalIncomesValue,
+          });
+        });
       } else {
         currentExpensesRef.once("value", (snapshot) => {
           let currentExpensesValue = snapshot.val();
-          let totalBudgetValue = +currentValue - +value;
-          let totalExpensesValue = +currentExpensesValue - Math.abs(+value);
+
+          let totalBudgetValue = 0;
+          let totalExpensesValue = 0;
+          totalBudgetValue = +currentValue - +value;
+          totalExpensesValue = +currentExpensesValue - Math.abs(+value);
           userRef.update({
             totalBudget: totalBudgetValue,
             totalExpenses: totalExpensesValue,

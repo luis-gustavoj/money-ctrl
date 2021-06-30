@@ -26,6 +26,10 @@ export function useUser() {
       const databaseUserInfo = userInfo.val();
       setUserInfo(databaseUserInfo);
     });
+
+    return () => {
+      userRef.off("value");
+    };
   }, [user]);
 
   return { userInfo };
