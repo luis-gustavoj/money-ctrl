@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
 
@@ -30,6 +30,12 @@ export function TransactionForm({
   const [description, setDescription] = useState("");
   const [value, setValue] = useState();
   const [date, setDate] = useState("");
+
+  useEffect(() => {
+    setDescription(editingDescription);
+    setValue(editingValue);
+    setDate(editingDate);
+  }, [editingDescription, editingDate, editingValue]);
 
   async function handleSendTransaction(event: FormEvent) {
     event.preventDefault();
@@ -113,7 +119,13 @@ export function TransactionForm({
         });
       }
     });
+    if (isEditing) {
+      setEditingTransaction(false);
+    } else {
+      handleCloseModal();
+    }
   }
+
   return (
     <form onSubmit={handleSendTransaction}>
       <div className="input-container">
