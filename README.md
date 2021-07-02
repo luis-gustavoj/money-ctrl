@@ -21,10 +21,32 @@
 - [ ✔ ] Calculate total expenses
 - [ ❌ ] Classify expense/income by categories
 - [ ❌ ] Plot charts based on budget analysis
+ 
+## 📷 Layout
+
+### Home
+
+![Home page image](/src/assets/images/layout/homepage.png)
+
+### Register
+
+![Register page image](/src/assets/images/layout/register.png)
+
+### Dashboard
+
+![dashboard page image](/src/assets/images/layout/dashboard.png)
+
+### Add transaction
+
+![add transaction modal image](/src/assets/images/layout/addtransaction.png)
 
 ## ⚖ License
 
 This project is under MIT license. For more details [click here](/LICENSE)
+
+## 🌐 App on Firebase Hosting
+
+- https://budget-management-10a51.web.app/
 
 ## ⚠ Currently in development
 
