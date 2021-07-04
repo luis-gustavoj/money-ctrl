@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { Dashboard } from "./pages/Dashboard";
 import { ModalContextProvider } from "./contexts/ModalContext";
+import { WalletContextProvider } from "./contexts/WalletContext";
 
 export function App() {
   return (
@@ -15,9 +16,11 @@ export function App() {
         <Toaster />
         <Route path="/" exact component={Home}></Route>
         <Route path="/register" component={Register}></Route>
-        <ModalContextProvider>
-          <Route path="/dashboard" component={Dashboard} />
-        </ModalContextProvider>
+        <WalletContextProvider>
+          <ModalContextProvider>
+            <Route path="/dashboard" component={Dashboard} />
+          </ModalContextProvider>
+        </WalletContextProvider>
       </AuthContextProvider>
     </BrowserRouter>
   );

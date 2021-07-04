@@ -1,10 +1,9 @@
-import "./styles.scss";
-
-import { database } from "../../services/firebase";
 import { useAuth } from "../../hooks/useAuth";
-import { toast } from "react-hot-toast";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Modal } from "../Modal";
+import {WalletContext} from '../../contexts/WalletContext'
+
+import "./styles.scss";
 
 type TransactionProps = {
   description: string;
@@ -22,88 +21,38 @@ export function TransactionCard({
   const { user } = useAuth();
 
   const [isEditing, setIsEditing] = useState(false);
+  
+  const {dispatch} = useContext(WalletContext);
 
   const formatter = new Intl.NumberFormat("pt-br", {
     minimumFractionDigits: 2,
   });
 
   async function handleDeleteTransaction() {
-    if (!user) {
+    if(!user){
       return;
     }
 
-    const transactionRef = database.ref(`users/${user.id}/transactions`);
-
-    toast.promise(transactionRef.child(id).remove(), {
-      loading: "Deleting...",
-      success: <b>Transaction deleted!</b>,
-      error: <b>Could not delete.</b>,
-    });
-
-    handleChangeValues();
-  }
-
-  function handleEditTransaction() {
-    setIsEditing(true);
-  }
-
-  function handleCloseEditTransactionModal() {
-    setIsEditing(false);
-  }
-
-  function handleChangeValues() {
-    if (!user) {
-      return;
-    }
-
-    const userRef = database.ref(`users/${user.id}`);
-    const currentBudgetRef = database.ref(`users/${user.id}/totalBudget`);
-    const currentExpensesRef = database.ref(`users/${user.id}/totalExpenses`);
-    const currentIncomesRef = database.ref(`users/${user.id}/totalIncomes`);
-
-    currentBudgetRef.once("value", (snapshot) => {
-      let currentValue = snapshot.val();
-      if (value > 0) {
-        let totalValue = 0;
-        let totalIncomesValue = 0;
-
-        currentIncomesRef.once("value", (snapshot) => {
-          let currentIncomesValue = snapshot.val();
-
-          totalValue = +currentValue - +value;
-          totalIncomesValue = +currentIncomesValue - +value;
-          userRef.update({
-            totalBudget: totalValue,
-            totalIncomes: totalIncomesValue,
-          });
-        });
-      } else {
-        currentExpensesRef.once("value", (snapshot) => {
-          let currentExpensesValue = snapshot.val();
-
-          let totalBudgetValue = 0;
-          let totalExpensesValue = 0;
-          totalBudgetValue = +currentValue - +value;
-          totalExpensesValue = +currentExpensesValue - Math.abs(+value);
-          userRef.update({
-            totalBudget: totalBudgetValue,
-            totalExpenses: totalExpensesValue,
-          });
-        });
+    dispatch({
+      type: 'DELETE_TRANSACTION',
+      payload: {
+        transactionId: id,
+        userId: user.id,
       }
-    });
+    })
+  }
+
+  const setEditingTransaction = () => {
+    setIsEditing(false);
   }
 
   return (
     <>
       {isEditing && (
         <Modal
-          editingValue={value}
           id={id}
-          editingDescription={description}
-          editingDate={date}
           isEditing={isEditing}
-          setEditingTransaction={handleCloseEditTransactionModal}
+          setEditingTransaction={setEditingTransaction}
         ></Modal>
       )}
       <div className="transaction-card">
@@ -115,7 +64,7 @@ export function TransactionCard({
         </div>
         <div className="transaction-date">{date.replaceAll("-", "/")}</div>
         <div className="transaction-buttons">
-          <div className="icon edit" onClick={handleEditTransaction}>
+          <div className="icon edit" onClick={() => {setIsEditing(true)}}>
             <svg
               viewBox="0 0 24 24"
               fill="none"

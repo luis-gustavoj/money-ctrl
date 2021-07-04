@@ -5,9 +5,6 @@ import { useAuth } from "./useAuth";
 type UserType = {
   id: string;
   name: string;
-  totalBudget: number;
-  totalExpenses: number;
-  totalIncomes: number;
 };
 
 export function useUser() {

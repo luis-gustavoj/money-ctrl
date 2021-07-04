@@ -8,16 +8,10 @@ import { TransactionForm } from "../TransactionForm";
 import "./styles.scss";
 
 export function Modal({
-  editingValue,
-  editingDescription,
-  editingDate,
   id,
   isEditing,
   setEditingTransaction,
 }: {
-  editingValue?: number;
-  editingDescription?: string;
-  editingDate?: string;
   id?: string;
   isEditing?: boolean;
   setEditingTransaction?: () => void;
@@ -37,10 +31,7 @@ export function Modal({
         <div className="modalBody">
           {isEditing ? (
             <TransactionForm
-              editingValue={editingValue}
               id={id}
-              editingDescription={editingDescription}
-              editingDate={editingDate}
               isEditing={isEditing}
               setEditingTransaction={setEditingTransaction}
             ></TransactionForm>

@@ -9,18 +9,30 @@ import logoImg from "../../assets/images/logo.png";
 
 import "./styles.scss";
 import { Modal } from "../../components/Modal";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ModalContext } from "../../contexts/ModalContext";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useUser } from "../../hooks/useUser";
 import { Button } from "../../components/Button";
 import { useAuth } from "../../hooks/useAuth";
+import { WalletContext } from "../../contexts/WalletContext";
 
 export function Dashboard() {
   const { isModalVisible } = useContext(ModalContext);
   const { signOut } = useAuth();
   const { transactions } = useTransactions();
   const { userInfo } = useUser();
+  const {wallet, dispatch} = useContext(WalletContext);
+
+  useEffect(() => {
+    dispatch({
+      type: 'UPDATE_WALLET',
+      payload: {
+        transactions: transactions,
+      }
+    })
+
+  }, [transactions, dispatch]);
 
   return (
     <div id="dashboard-page">
@@ -43,17 +55,17 @@ export function Dashboard() {
                 <Card
                   cardTitle="Current balance"
                   cardImg={balanceImg}
-                  cardValue={userInfo?.totalBudget}
+                  cardValue={wallet.budget!}
                 ></Card>
                 <Card
                   cardTitle="Incomes"
                   cardImg={incomeImg}
-                  cardValue={userInfo?.totalIncomes}
+                  cardValue={wallet.incomes!}
                 ></Card>
                 <Card
                   cardTitle="Expenses"
                   cardImg={expenseImg}
-                  cardValue={userInfo?.totalExpenses}
+                  cardValue={wallet.expenses!}
                 ></Card>
               </div>
               <div className="content-body">

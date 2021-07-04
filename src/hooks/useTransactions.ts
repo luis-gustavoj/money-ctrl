@@ -42,7 +42,7 @@ export function useTransactions() {
           return {
             id: key,
             description: value.description,
-            value: value.value,
+            value: Number(value.value),
             date: value.date,
           };
         }
