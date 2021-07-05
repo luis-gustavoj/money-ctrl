@@ -21,6 +21,10 @@
 - [ ✔ ] Calculate total expenses
 - [ ❌ ] Classify expense/income by categories
 - [ ❌ ] Plot charts based on budget analysis
+
+## 🛠 Known issues
+
+- 📍 Not responsive
  
 ## 📷 Layout
 
